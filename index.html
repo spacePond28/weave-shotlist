@@ -10,6 +10,40 @@
 </head>
 
 <body>
+    <section>
+        <form id="my-new-shot-list">
+            <div class="container bg-dark-subtle border-1 border rounded p-3">
+                <fieldset>
+                    <legend class="text-uppercase fs-5 fw-light">Project Details</legend>
+                    <div class="row">
+                        <div class="col"><label class="form-label">Project Title</label><input id="project-title" class="form-control form-control" type="text" /></div>
+                        <div class="col"><label class="form-label">Filming Date</label><input id="filming-date-details" class="form-control form-control" type="date" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><label class="form-label">Start Time</label><input id="start-time-details" class="form-control form-control" type="time" /></div>
+                        <div class="col"><label class="form-label">Lunch</label><input id="lunch-time-details" class="form-control form-control" type="time" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><button id="update-details" class="btn btn-primary" type="button">Create Project</button></div>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+    </section>
+    <section>
+        <div class="container bg-dark-subtle border-1 border rounded p-3">
+            <fieldset>
+                <legend class="text-uppercase fs-5 fw-light">Open Existing Project</legend>
+                <div class="row">
+                    <div class="col"><label class="form-label">Select Project</label><select id="project-list" class="form-control"></select></div>
+                    <div class="col"><button id="open-project" class="btn btn-primary" type="button">Open Project</button><button id="delete-project" class="btn btn-danger mx-2" type="button"><svg class="bi bi-trash-fill" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"></path>
+                            </svg></button></div>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
