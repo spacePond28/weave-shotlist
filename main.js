@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-const { loadProjects, createNewProject, openProject, deleteProject } = require('./js/project-manager');
+const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails } = require('./js/project-manager');
 
 let mainWindow;
 let db = new sqlite3.Database('./shotlist.db');
@@ -12,7 +12,8 @@ function createWindow() {
         height: 600,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            autofill: true
         }
     });
 
