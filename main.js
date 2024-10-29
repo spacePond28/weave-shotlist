@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails, addShot } = require('./js/project-manager');
+const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails, addShot, getShots } = require('./js/project-manager');
 
 let mainWindow;
 let db = new sqlite3.Database('./shotlist.db');
@@ -66,3 +66,4 @@ ipcMain.on('delete-project', deleteProject);
 ipcMain.on('amend-project-details', amendProjectDetails);
 ipcMain.on('get-project-details', getProjectDetails);
 ipcMain.on('add-shot', addShot);
+ipcMain.on('get-shots', getShots);

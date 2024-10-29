@@ -67,11 +67,21 @@ function addShot(event, shotDetails) {
         if (err) {
           event.reply('add-shot-response', { success: false, message: 'Failed to add shot.' });
         } else {
-          event.reply('add-shot-response', { success: true, message: 'Shot added successfully.' });
+          event.reply('add-shot-response', { success: true, message: 'Shot added successfully.', shot: shotDetails });
         }
       }
     );
   }
+
+  function getShots(event, projectId) {
+    db.all('SELECT * FROM shots WHERE project_id = ?', [projectId], (err, rows) => {
+      if (err) {
+        event.reply('get-shots-response', { success: false, message: 'Failed to fetch shots.' });
+      } else {
+        event.reply('get-shots-response', { success: true, shots: rows });
+      }
+    });
+  }
   
   
-module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, addShot };
+module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, addShot, getShots };
