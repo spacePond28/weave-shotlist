@@ -39,20 +39,20 @@ function getProjectDetails(event, projectId) {
         console.error('Error fetching project details:', err);
         throw err;
       }
-  
-      console.log('Retrieved project details:', row);
-      event.reply('project-details-loaded', row);
+       event.reply('project-details-loaded', row);
     });
   }
-  
-function amendProjectDetails(event, projectDetails) {
+
+  function amendProjectDetails(event, projectDetails) {
     const { id, title, filmingDate, startTime, lunchTime } = projectDetails;
     db.run('UPDATE projects SET title = ?, filming_date = ?, start_time = ?, lunch_time = ? WHERE id = ?', [title, filmingDate, startTime, lunchTime, id], function(err) {
         if (err) {
-            throw err;
+            event.reply('amend-project-details-response', { success: false, message: 'Failed to amend project details.' });
+        } else {
+            event.reply('amend-project-details-response', { success: true, message: 'Project details amended successfully.' });
         }
-        event.reply('project-details-amended');
     });
 }
+
 
 module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails };

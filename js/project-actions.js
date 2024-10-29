@@ -53,7 +53,6 @@ document.getElementById('open-project').addEventListener('click', () => {
 
 ipcRenderer.on('project-opened', (event, projectId) => {
     window.location.href = `edit-project.html?projectId=${projectId}`;
-    alert(`edit-project.html?projectId=${projectId}`);
 });
 
 // Delete an existing project

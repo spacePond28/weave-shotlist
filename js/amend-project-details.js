@@ -3,7 +3,6 @@ const { ipcRenderer } = require('electron');
 // Function to load project details
 function loadProjectDetails(projectId) {
   ipcRenderer.send('get-project-details', projectId);
-  console.log(projectId);
 }
 
 // Prepopulate the form with project details
@@ -26,6 +25,11 @@ document.getElementById('amend-project-details-submit').addEventListener('click'
   };
 
   ipcRenderer.send('amend-project-details', projectDetails);
+});
+
+// Listen for response from main process
+ipcRenderer.on('amend-project-details-response', (event, response) => {
+  alert(response.message);
 });
 
 // Load project details on page load
