@@ -1,12 +1,16 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
+const { loadProjects, createNewProject, openProject, deleteProject } = require('./js/project-manager');
+
+let mainWindow;
+let db = new sqlite3.Database('./shotlist.db');
 
 function createWindow() {
-    const mainWindow = new BrowserWindow({
-        width: 1000,
+    mainWindow = new BrowserWindow({
+        width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
             contextIsolation: false
         }
@@ -15,18 +19,46 @@ function createWindow() {
     mainWindow.loadFile('index.html');
 }
 
-app.whenReady().then(() => {
+app.on('ready', () => {
     createWindow();
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
-        }
-    });
+    createTables();
 });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
-});
+function createTables() {
+    db.run(`CREATE TABLE IF NOT EXISTS projects (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        filming_date TEXT NOT NULL,
+        start_time TEXT NOT NULL,
+        lunch_time TEXT NOT NULL
+    )`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS shots (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        project_id INTEGER NOT NULL,
+        time TEXT,
+        shot INTEGER,
+        scene TEXT,
+        setup TEXT,
+        description TEXT,
+        equipment TEXT,
+        movement TEXT,
+        angle TEXT,
+        shot_size TEXT,
+        lens TEXT,
+        time_est TEXT,
+        notes TEXT,
+        camera TEXT,
+        sound TEXT,
+        cast TEXT,
+        travel_time TEXT,
+        action TEXT,
+        FOREIGN KEY (project_id) REFERENCES projects(id)
+    )`);
+}
+
+ipcMain.on('load-projects', loadProjects);
+ipcMain.on('create-new-project', createNewProject);
+ipcMain.on('open-project', openProject);
+ipcMain.on('delete-project', deleteProject);
+ipcMain.on('amend-project-details', amendProjectDetails);
