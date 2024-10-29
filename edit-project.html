@@ -10,22 +10,25 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="p-5">
         <div class="container">
             <h1 class="display-5">Shot List</h1>
         </div>
         <section>
-            <form>
+            <form id="amend-project-details">
                 <div class="container bg-dark-subtle border rounded border-1 p-3">
                     <fieldset>
-                        <legend class="text-uppercase fs-5 fw-light">Project Details</legend>
+                        <legend class="text-uppercase fs-5 fw-light">Amend Project Details</legend>
                         <div class="row">
-                            <div class="col"><label class="form-label">Project Title</label><input id="project-title" class="form-control" type="text" /></div>
-                            <div class="col"><label class="form-label">Filming Date</label><input id="filming-date-details" class="form-control" type="date" /></div>
+                            <div class="col"><label class="form-label">Amend Project Title</label><input id="project-title" class="form-control" type="text" /></div>
+                            <div class="col"><label class="form-label">Amend Filming Date</label><input id="filming-date-details" class="form-control" type="date" /></div>
                         </div>
                         <div class="row">
-                            <div class="col"><label class="form-label">Start time</label><input id="start-time-details" class="form-control" type="time" /></div>
-                            <div class="col"><label class="form-label">Lunch </label><input id="lunch-time-details" class="form-control" type="time" /></div>
+                            <div class="col"><label class="form-label">Amend Start time</label><input id="start-time-details" class="form-control" type="time" /></div>
+                            <div class="col"><label class="form-label">Amend Lunch </label><input id="lunch-time-details" class="form-control" type="time" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col my-3"><button id="amend-project-details-submit" class="btn btn-warning btn-lg border rounded w-100" type="button">Amend Project Details</button></div>
                         </div>
                     </fieldset>
                 </div>
@@ -37,28 +40,97 @@
                     <fieldset>
                         <legend class="fs-5 fw-light">Shot list (Add to list)</legend>
                         <div class="row mb-3">
-                            <div class="col-md-3"><label class="form-label" for="scene">Scene No</label><input id="scene" class="form-control form-control" type="number" /></div>
-                            <div class="col-md-3"><label class="form-label" for="setup">Setup No</label><input id="setup" class="form-control form-control" type="number" /></div>
-                            <div class="col-md-3"><label class="form-label" for="shot">Shot No</label><input id="shot" class="form-control form-control" type="number" /></div>
+                            <div class="col-md-6"><label class="form-label" for="scene">Scene No</label><input id="scene" class="form-control form-control" type="number" min="1" step="1" /></div>
+                            <div class="col-md-6"><label class="form-label" for="setup">Setup No</label><input id="setup" class="form-control form-control" type="number" min="1" step="1" /></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12"><label class="form-label" for="description">Description</label><textarea id="description" class="form-control form-control-lg form-control"></textarea></div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-2"><label class="form-label" for="equipment">Equipment</label><input id="equipment" class="form-control form-control" type="text" /></div>
-                            <div class="col-md-2"><label class="form-label" for="movement">Movement Type</label><input id="movement" class="form-control form-control" type="text" /></div>
-                            <div class="col-md-2"><label class="form-label" for="angle">Angle</label><input id="angle" class="form-control form-control" type="text" /></div>
-                            <div class="col-md-2"><label class="form-label" for="shotSize">Shot Size</label><input id="shotSize" class="form-control form-control" type="text" /></div>
-                            <div class="col-md-2"><label class="form-label" for="lens">Lens</label><input id="lens" class="form-control form-control" type="text" /></div>
-                            <div class="col-md-1"><label class="form-label" for="camera">Camera</label><input id="camera" class="form-control form-control" type="text" /></div>
-                            <div class="col-md-1"><label class="form-label" for="sound">Sound</label><input id="sound" class="form-control form-control" type="text" /></div>
+                            <div class="col-md-2"><label class="form-label" for="equipment">Equipment</label><select id="equipment" class="form-select">
+                                    <optgroup label="Equipment">
+                                        <option value="Tripod" selected>Tripod</option>
+                                        <option value="Gimbal">Gimbal</option>
+                                        <option value="Slider">Slider</option>
+                                        <option value="Jib">Jib</option>
+                                        <option value="Drone">Drone</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-md-2"><label class="form-label" for="movement">Movement Type</label><select id="movement" class="form-select">
+                                    <optgroup label="Movement">
+                                        <option value="Pan" selected>Pan</option>
+                                        <option value="Tilt">Tilt</option>
+                                        <option value="Dolly">Dolly</option>
+                                        <option value="Truck">Truck</option>
+                                        <option value="Pedestal">Pedestal</option>
+                                        <option value="Crane (Jib)">Crane (Jib)</option>
+                                        <option value="Handheld">Handheld</option>
+                                        <option value="Stedicam">Stedicam</option>
+                                        <option value="Rack Focus">Rack Focus</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-md-2"><label class="form-label" for="angle">Angle</label><select id="angle" class="form-select">
+                                    <optgroup label="Angle">
+                                        <option value="Eye Level" selected>Eye Level: The camera is positioned at the subject’s eye level, creating a neutral perspective.</option>
+                                        <option value="High Angle">High Angle: The camera looks down on the subject, making them appear smaller or more vulnerable.</option>
+                                        <option value="Low Angle">Low Angle: The camera looks up at the subject, making them appear larger or more powerful.</option>
+                                        <option value="Birds Eye View">Bird’s Eye View: The camera is positioned directly above the subject, providing a top-down view.</option>
+                                        <option value="Worms Eye View">Worm’s Eye View: The camera is positioned very low to the ground, looking up, often used for dramatic effect.</option>
+                                        <option value="Dutch Angle">Dutch Angle (Tilted Angle): The camera is tilted to one side, creating a sense of unease or tension.</option>
+                                        <option value="Over-the-Shoulder">Over-the-Shoulder: The camera is positioned behind one character, looking over their shoulder at another character.</option>
+                                        <option value="POV">Point of View (POV): The camera shows what a character is seeing, putting the audience in their perspective.</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-md-2"><label class="form-label" for="shotSize">Shot Size</label><select id="shotSize" class="form-select">
+                                    <optgroup label="Shot Size">
+                                        <option value="Extreme Wide Shot (EWS)" selected>Extreme Wide Shot (EWS)</option>
+                                        <option value="Wide Shot (WS)">Wide Shot (WS)</option>
+                                        <option value="Full Shot (FS)">Full Shot (FS)</option>
+                                        <option value="Medium Full Shot (MFS)">Medium Full Shot (MFS)</option>
+                                        <option value="Medium Shot (MS)">Medium Shot (MS)</option>
+                                        <option value="Medium Close-Up (MCU)">Medium Close-Up (MCU)</option>
+                                        <option value="Close-Up (CU)">Close-Up (CU)</option>
+                                        <option value="Extreme Close-Up (ECU)">Extreme Close-Up (ECU)</option>
+                                        <option value="Over-the-Shoulder Shot (OTS)">Over-the-Shoulder Shot (OTS)</option>
+                                        <option value="Point of View Shot (POV)">Point of View Shot (POV)</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-md-2"><label class="form-label" for="lens">Lens</label><select id="lens" class="form-select">
+                                    <optgroup label="Lens Type">
+                                        <option value="14mm" selected>14mm</option>
+                                        <option value="20mm">20mm</option>
+                                        <option value="24mm">24mm</option>
+                                        <option value="35mm">35mm</option>
+                                        <option value="50mm">50mm</option>
+                                        <option value="60mm">60mm</option>
+                                        <option value="85mm">85mm</option>
+                                        <option value="100mm">100mm</option>
+                                        <option value="135mm">135mm</option>
+                                        <option value="200mm">200mm</option>
+                                        <option value="300mm">300mm</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-md-1"><label class="form-label" for="camera">Camera</label><select id="camera" class="form-select">
+                                    <optgroup label="A">
+                                        <option value="A" selected>A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                    </optgroup>
+                                </select></div>
+                            <div class="col-md-1"><label class="form-label" for="sound">Sound</label><select id="sound" class="form-select">
+                                    <optgroup label="Sound Required">
+                                        <option value="Y" selected>Yes</option>
+                                        <option value="N">No</option>
+                                    </optgroup>
+                                </select></div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6"><label class="form-label" for="timeEst">Time Est.</label><input id="timeEst" class="form-control form-control" type="number" /></div>
-                            <div class="col-md-6"><label class="form-label" for="travelTime">Travel Time</label><input id="travelTime" class="form-control form-control" type="number" /></div>
+                            <div class="col col-md-4"><label class="form-label" for="timeEst">Time Est.</label><input id="timeEst" class="form-control form-control" type="number" min="0" max="1440" step="5" placeholder="10" /></div>
+                            <div class="col col-md-4"><label class="form-label" for="travelTime">Extras - travel time etc  (if required)</label><input id="travelTime" class="form-control form-control" type="number" min="0" max="1440" step="5" placeholder="0" /></div>
+                            <div class="col col-md-4"><label class="form-label" for="travelTime-1">Hard Start Time</label><input id="manual-start-time" class="form-control form-control" type="number" /></div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-md-6"><label class="form-label" for="cast">Cast Required</label><input id="cast" class="form-control form-control" type="text" /></div>
+                            <div class="col-md-6"><label class="form-label" for="cast">Cast Required (separate with a comma)</label><input id="cast" class="form-control form-control" type="text" /></div>
                             <div class="col-md-6"><label class="form-label" for="notes">Notes</label><input id="notes" class="form-control form-control" type="text" /></div>
                         </div>
                         <div class="d-grid"><button id="add-shot" class="btn btn-primary" type="button">Add Shot</button></div>
