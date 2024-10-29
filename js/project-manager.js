@@ -35,13 +35,16 @@ function deleteProject(event, projectId) {
 
 function getProjectDetails(event, projectId) {
     db.get('SELECT * FROM projects WHERE id = ?', [projectId], (err, row) => {
-        if (err) {
-            throw err;
-        }
-        event.reply('project-details-loaded', row);
+      if (err) {
+        console.error('Error fetching project details:', err);
+        throw err;
+      }
+  
+      console.log('Retrieved project details:', row);
+      event.reply('project-details-loaded', row);
     });
-}
-
+  }
+  
 function amendProjectDetails(event, projectDetails) {
     const { id, title, filmingDate, startTime, lunchTime } = projectDetails;
     db.run('UPDATE projects SET title = ?, filming_date = ?, start_time = ?, lunch_time = ? WHERE id = ?', [title, filmingDate, startTime, lunchTime, id], function(err) {
