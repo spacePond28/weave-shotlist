@@ -73,4 +73,5 @@ function addShot(event, shotDetails) {
     );
   }
   
+  
 module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, addShot };
