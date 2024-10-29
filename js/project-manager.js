@@ -54,5 +54,23 @@ function getProjectDetails(event, projectId) {
     });
 }
 
-
-module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails };
+function addShot(event, shotDetails) {
+    const {
+      projectId, scene, setup, description, equipment, movement, angle, shotSize, lens, camera, sound,
+      timeEst, travelTime, manualStartTime, cast, notes
+    } = shotDetails;
+  
+    db.run(`INSERT INTO shots (project_id, scene, setup, description, equipment, movement, angle, shot_size, lens, camera, sound, time_est, travel_time, manual_start_time, cast, notes) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+      [projectId, scene, setup, description, equipment, movement, angle, shotSize, lens, camera, sound, timeEst, travelTime, manualStartTime, cast, notes], 
+      function(err) {
+        if (err) {
+          event.reply('add-shot-response', { success: false, message: 'Failed to add shot.' });
+        } else {
+          event.reply('add-shot-response', { success: true, message: 'Shot added successfully.' });
+        }
+      }
+    );
+  }
+  
+module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, addShot };

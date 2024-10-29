@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails } = require('./js/project-manager');
+const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails, addShot } = require('./js/project-manager');
 
 let mainWindow;
 let db = new sqlite3.Database('./shotlist.db');
@@ -53,6 +53,7 @@ function createTables() {
         sound TEXT,
         cast TEXT,
         travel_time TEXT,
+        manual_start_time TEXT,
         action TEXT,
         FOREIGN KEY (project_id) REFERENCES projects(id)
     )`);
@@ -64,3 +65,4 @@ ipcMain.on('open-project', openProject);
 ipcMain.on('delete-project', deleteProject);
 ipcMain.on('amend-project-details', amendProjectDetails);
 ipcMain.on('get-project-details', getProjectDetails);
+ipcMain.on('add-shot', addShot);
