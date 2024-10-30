@@ -157,3 +157,21 @@ function recalculateTimes() {
   }
 }
 
+// save the shot list 
+document.getElementById('save-shots').addEventListener('click', function() {
+  const projectId = new URLSearchParams(window.location.search).get('projectId');
+  if (projectId) {
+    saveShots(projectId);
+  } else {
+    console.error('Project ID not found');
+  }
+});
+
+// Load existing shots
+document.addEventListener('DOMContentLoaded', function() {
+  const projectId = document.getElementById('projectId').value; // Assuming you have a hidden input with the project ID
+  getShots(projectId);
+  if (err){
+    console.log(err);
+  } 
+});

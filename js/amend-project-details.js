@@ -35,5 +35,6 @@ window.onload = () => {
   const projectId = new URLSearchParams(window.location.search).get('projectId');
   if (projectId) {
     loadProjectDetails(projectId);
+    getShots(projectId); // Load shots for the project
   }
 };
