@@ -100,7 +100,7 @@ document.getElementById('misc-time-submit').addEventListener('click', function(e
   const miscNewRow = document.createElement('tr');
   miscNewRow.classList.add('table-danger');
   miscNewRow.classList.add('handle');
-  newRow.classList.add('misc-row');
+  miscNewRow.classList.add('misc-row');
   miscNewRow.setAttribute('data-value', miscDurationInMinutes);
   miscNewRow.innerHTML = `
       <td class="fw-bold">${newTime}</td>
@@ -239,7 +239,61 @@ function populateTable(shots, miscTimes) {
       row.appendChild(timeCell);
 
       // Add other cells for shot data
-      // ...
+      const shotNumberCell = document.createElement('td');
+      shotNumberCell.innerText = shot.shotNumber;
+      row.appendChild(shotNumberCell);
+
+      const sceneNumberCell = document.createElement('td');
+      sceneNumberCell.innerText = shot.sceneNumber;
+      row.appendChild(sceneNumberCell);
+
+      const takeNumberCell = document.createElement('td');
+      takeNumberCell.innerText = shot.takeNumber;
+      row.appendChild(takeNumberCell);
+
+      const descriptionCell = document.createElement('td');
+      descriptionCell.innerText = shot.description;
+      row.appendChild(descriptionCell);
+
+      const equipmentCell = document.createElement('td');
+      equipmentCell.innerText = shot.equipment;
+      row.appendChild(equipmentCell);
+
+      const movementCell = document.createElement('td');
+      movementCell.innerText = shot.movement;
+      row.appendChild(movementCell);
+
+      const angleCell = document.createElement('td');
+      angleCell.innerText = shot.angle;
+      row.appendChild(angleCell);
+
+      const framingCell = document.createElement('td');
+      framingCell.innerText = shot.framing;
+      row.appendChild(framingCell);
+
+      const lensCell = document.createElement('td');
+      lensCell.innerText = shot.lens;
+      row.appendChild(lensCell);
+
+      const audioCell = document.createElement('td');
+      audioCell.innerText = shot.audio;
+      row.appendChild(audioCell);
+
+      const soundCell = document.createElement('td');
+      soundCell.innerText = shot.sound;
+      row.appendChild(soundCell);
+
+      const durationCell = document.createElement('td');
+      durationCell.innerText = shot.duration;
+      row.appendChild(durationCell);
+
+      const actorsCell = document.createElement('td');
+      actorsCell.innerText = shot.actors;
+      row.appendChild(actorsCell);
+
+      const notesCell = document.createElement('td');
+      notesCell.innerText = shot.notes;
+      row.appendChild(notesCell);
 
       tableBody.appendChild(row);
   });

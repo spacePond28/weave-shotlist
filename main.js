@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails } = require('./js/project-manager');
+const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails, loadShotsFromDB, saveShotsToDB } = require('./js/project-manager');
 
 let mainWindow;
 let db = new sqlite3.Database('./shotlist.db');
@@ -37,21 +37,30 @@ function createTables() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         project_id INTEGER NOT NULL,
         time TEXT,
-        shot INTEGER,
-        scene TEXT,
-        setup TEXT,
+        shot_number TEXT,
+        scene_number TEXT,
+        take_number TEXT,
         description TEXT,
         equipment TEXT,
         movement TEXT,
         angle TEXT,
-        shot_size TEXT,
+        framing TEXT,
         lens TEXT,
-        camera TEXT,
+        audio TEXT,
         sound TEXT,
-        time_est TEXT,
-        cast TEXT,
+        duration TEXT,
+        actors TEXT,
         notes TEXT,
-        action TEXT,
+        data_value TEXT,
+        FOREIGN KEY (project_id) REFERENCES projects(id)
+    )`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS misc_times (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        project_id INTEGER NOT NULL,
+        time TEXT NOT NULL,
+        description TEXT NOT NULL,
+        data_value TEXT,
         FOREIGN KEY (project_id) REFERENCES projects(id)
     )`);
 }
@@ -62,3 +71,15 @@ ipcMain.on('open-project', openProject);
 ipcMain.on('delete-project', deleteProject);
 ipcMain.on('amend-project-details', amendProjectDetails);
 ipcMain.on('get-project-details', getProjectDetails);
+
+// Listen for save-shots event from renderer process
+ipcMain.on('save-shots-to-db', (event, { projectId, shots }) => {
+    saveShotsToDB(projectId, shots);
+});
+
+// Listen for load-shots event from renderer process
+ipcMain.on('load-shots-from-db', (event, projectId) => {
+    loadShotsFromDB(projectId, (shots, miscTimes) => {
+        event.sender.send('load-shots-response', { success: true, shots, miscTimes });
+    });
+});
