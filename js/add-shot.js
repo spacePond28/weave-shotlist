@@ -161,6 +161,8 @@ function recalculateTimes() {
 
 
 //Saving functionality
+// js/add-shot.js
+
 function extractTableData() {
   const table = document.getElementById('shot-list');
   const rows = table.querySelectorAll('tbody tr');
@@ -204,7 +206,12 @@ function extractTableData() {
   return data;
 }
 
-//load shots functionality 
+function saveShots() {
+  const projectId = document.getElementById('projectId').value;
+  const shots = extractTableData();
+  window.api.send('save-shots', { projectId, shots });
+}
+
 function loadShots() {
   const projectId = document.getElementById('projectId').value;
   window.api.send('load-shots', projectId);
@@ -257,6 +264,9 @@ function populateTable(shots, miscTimes) {
   });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  loadShots();
 
-
-
+  const saveButton = document.getElementById('save-button');
+  saveButton.addEventListener('click', saveShots);
+});
