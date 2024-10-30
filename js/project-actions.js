@@ -21,14 +21,12 @@ document.getElementById('create-project').addEventListener('click', () => {
     const projectTitle = document.getElementById('project-title').value;
     const filmingDate = document.getElementById('filming-date-details').value;
     const startTime = document.getElementById('start-time-details').value;
-    const lunchTime = document.getElementById('lunch-time-details').value;
 
-    if (projectTitle && filmingDate && startTime && lunchTime) {
+    if (projectTitle && filmingDate && startTime) {
         const projectDetails = {
             title: projectTitle,
             filmingDate: filmingDate,
-            startTime: startTime,
-            lunchTime: lunchTime
+            startTime: startTime
         };
 
         ipcRenderer.send('create-new-project', projectDetails);

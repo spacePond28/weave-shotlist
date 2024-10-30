@@ -10,7 +10,6 @@ ipcRenderer.on('project-details-loaded', (event, project) => {
   document.getElementById('project-title').value = project.title;
   document.getElementById('filming-date-details').value = project.filming_date;
   document.getElementById('start-time-details').value = project.start_time;
-  document.getElementById('lunch-time-details').value = project.lunch_time;
 });
 
 // Handle form submission to amend project details
@@ -21,7 +20,6 @@ document.getElementById('amend-project-details-submit').addEventListener('click'
     title: document.getElementById('project-title').value,
     filmingDate: document.getElementById('filming-date-details').value,
     startTime: document.getElementById('start-time-details').value,
-    lunchTime: document.getElementById('lunch-time-details').value
   };
 
   ipcRenderer.send('amend-project-details', projectDetails);

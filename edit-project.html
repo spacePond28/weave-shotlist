@@ -15,33 +15,32 @@
             <h1 class="display-5">Shot List</h1>
         </div>
         <section>
-            <form id="amend-project-details">
+            <form id="amend-project-details" class="px-5 pt-5 pb-3">
                 <div class="container bg-dark-subtle border rounded border-1 p-3">
-                    
-                        <legend class="text-uppercase fs-5 fw-light">Amend Project Details</legend>
+                    <fieldset>
+                        <legend class="text-uppercase fs-5 fw-light">Project Details</legend>
                         <div class="row">
-                            <div class="col"><label class="form-label">Amend Project Title</label><input id="project-title" class="form-control" type="text" /></div>
-                            <div class="col"><label class="form-label">Amend Filming Date</label><input id="filming-date-details" class="form-control" type="date" /></div>
+                            <div class="col"><label class="form-label">Project Title</label><input id="project-title" class="form-control" type="text" /></div>
+                            <div class="col"><label class="form-label">Filming Date</label><input id="filming-date-details" class="form-control" type="date" /></div>
                         </div>
                         <div class="row">
-                            <div class="col"><label class="form-label">Amend Start time</label><input id="start-time-details" class="form-control" type="time" /></div>
-                            <div class="col"><label class="form-label">Amend Lunch </label><input id="lunch-time-details" class="form-control" type="time" /></div>
+                            <div class="col"><label class="form-label">Start time</label><input id="start-time-details" class="form-control" type="time" /></div>
                         </div>
                         <div class="row">
                             <div class="col my-3"><button id="amend-project-details-submit" class="btn btn-warning btn-lg border rounded w-100" type="button">Amend Project Details</button></div>
                         </div>
-                   
+                    </fieldset>
                 </div>
             </form>
         </section>
         <section>
-            <form id="shot-form" class="p-5">
+            <form id="shot-form" class="px-5 py-2">
                 <div class="container bg-success-subtle border rounded border-1 p-3">
-                   
+                    <fieldset>
                         <legend class="fs-5 fw-light">Shot list (Add to list)</legend>
                         <div class="row mb-3">
-                            <div class="col-md-6"><label class="form-label" for="scene">Scene No</label><input id="scene" class="form-control form-control" type="number" min="1" step="1" /></div>
-                            <div class="col-md-6"><label class="form-label" for="setup">Setup No</label><input id="setup" class="form-control form-control" type="number" min="1" step="1" /></div>
+                            <div class="col col-md-6"><label class="form-label" for="scene">Scene No</label><input id="scene" class="form-control form-control" type="number" /></div>
+                            <div class="col col-md-6"><label class="form-label" for="setup">Setup No</label><input id="setup" class="form-control form-control" type="number" /></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12"><label class="form-label" for="description">Description</label><textarea id="description" class="form-control form-control-lg form-control"></textarea></div>
@@ -125,56 +124,93 @@
                                 </select></div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col col-md-4"><label class="form-label" for="timeEst">Time Est.</label><input id="timeEst" class="form-control form-control" type="number" min="0" max="1440" step="5" placeholder="10" /></div>
-                            <div class="col col-md-4"><label class="form-label" for="travelTime">Extras - travel time etc  (if required)</label><input id="travelTime" class="form-control form-control" type="number" min="0" max="1440" step="5" placeholder="0" /></div>
-                            <div class="col col-md-4"><label class="form-label" for="travelTime-1">Hard Start Time</label><input id="manual-start-time" class="form-control form-control" type="number" /></div>
+                            <div class="col col-md-12"><label class="form-label" for="timeEst">Time Est.</label><input id="timeEst" class="form-control" type="time" /></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6"><label class="form-label" for="cast">Cast Required (separate with a comma)</label><input id="cast" class="form-control form-control" type="text" /></div>
                             <div class="col-md-6"><label class="form-label" for="notes">Notes</label><input id="notes" class="form-control form-control" type="text" /></div>
                         </div>
-                        <div class="d-grid"><button id="shot-form-submit" class="btn btn-primary" type="button">Add Shot</button></div>
-                    
+                        <div class="d-grid"><button id="add-shot" class="btn btn-primary" type="button">Add Shot</button></div>
+                    </fieldset>
+                </div>
+            </form>
+        </section>
+        <section class="px-5 pt-2 pb-5">
+            <form id="misc-time-form" class="bg-danger-subtle border rounded p-3">
+                <legend class="fs-5 fw-light">Miscellaneous Time</legend>
+                <div class="row">
+                    <div class="col col-md-6"><label class="form-label">Description</label><input id="misc-desc-field" class="form-control" type="text" /></div>
+                    <div class="col col-md-6"><label class="form-label">Duration </label><input id="misc-duration-field" class="form-control" type="time" /></div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-12 py-3"><button id="misc-time-submit" class="btn btn-primary w-100" type="button">Add Miscellaneous Time</button></div>
                 </div>
             </form>
         </section>
         <section>
-            <div class="container">
+            <div class="container px-5">
                 <div class="table-responsive">
-                    <table id="shotListTable" class="table table-striped table-hover table-bordered">
+                    <table id="shot-list" class="table table-striped table-hover table-bordered">
                         <thead class="table-dark">
                             <tr>
                                 <th>Time</th>
-                                <th>Drag</th>
+                                <th>Shot</th>
                                 <th>Scene</th>
                                 <th>Setup</th>
-                                <th>Shot</th>
                                 <th>Description</th>
                                 <th>Equipment</th>
                                 <th>Movement</th>
                                 <th>Angle</th>
                                 <th>Shot Size</th>
                                 <th>Lens</th>
-                                <th>Time Est.</th>
-                                <th>Notes</th>
                                 <th>Camera</th>
                                 <th>Sound</th>
+                                <th>Time Est.</th>
                                 <th>Cast</th>
-                                <th>Travel Time</th>
+                                <th>Notes</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Rows will be added here -->
-                          </tbody>
+                            <tr data-value="30">
+                                <td class="table-info fw-bold">8:00</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>Opening scene description</td>
+                                <td>Camera, Tripod</td>
+                                <td>Pan</td>
+                                <td>High</td>
+                                <td>Wide</td>
+                                <td>50mm</td>
+                                <td>A</td>
+                                <td>Boom</td>
+                                <td>30 min</td>
+                                <td>Lead Actor</td>
+                                <td>Important notes</td>
+                                <td><button class="btn btn-danger btn-sm"><svg class="bi bi-trash3-fill fs-5 text-center" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"></path>
+                                        </svg></button></td>
+                            </tr>
+                            <tr class="table-danger" data-value="60">
+                                <td class="fw-bold">8:30</td>
+                                <td class="fw-bold text-center" colspan="14">Miscellaneous Entry - 1hr</td>
+                                <td><button class="btn btn-danger btn-sm"><svg class="bi bi-trash3-fill fs-5 text-center" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"></path>
+                                        </svg></button></td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
+                <div class="row">
+                    <div class="col"><button id="save-schedule-submit" class="btn btn-primary w-100" type="button">Save</button></div>
+                    <div class="col"><button id="export-schedule-submit" class="btn btn-secondary w-100" type="button">Export</button></div>
                 </div>
             </div>
         </section>
     </div>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/amend-project-details.js"></script>
-    <script src="js/add-shot.js"></script>
 </body>
 
 </html>

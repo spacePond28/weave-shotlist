@@ -11,8 +11,8 @@ function loadProjects(event) {
 }
 
 function createNewProject(event, projectDetails) {
-    const { title, filmingDate, startTime, lunchTime } = projectDetails;
-    db.run('INSERT INTO projects (title, filming_date, start_time, lunch_time) VALUES (?, ?, ?, ?)', [title, filmingDate, startTime, lunchTime], function(err) {
+    const { title, filmingDate, startTime } = projectDetails;
+    db.run('INSERT INTO projects (title, filming_date, start_time ) VALUES (?, ?, ?)', [title, filmingDate, startTime], function(err) {
         if (err) {
             throw err;
         }
@@ -45,8 +45,9 @@ function getProjectDetails(event, projectId) {
 
   function amendProjectDetails(event, projectDetails) {
     const { id, title, filmingDate, startTime, lunchTime } = projectDetails;
-    db.run('UPDATE projects SET title = ?, filming_date = ?, start_time = ?, lunch_time = ? WHERE id = ?', [title, filmingDate, startTime, lunchTime, id], function(err) {
+    db.run('UPDATE projects SET title = ?, filming_date = ?, start_time = ? WHERE id = ?', [title, filmingDate, startTime, id], function(err) {
         if (err) {
+            console.log(err);
             event.reply('amend-project-details-response', { success: false, message: 'Failed to amend project details.' });
         } else {
             event.reply('amend-project-details-response', { success: true, message: 'Project details amended successfully.' });
@@ -54,34 +55,17 @@ function getProjectDetails(event, projectId) {
     });
 }
 
-function addShot(event, shotDetails) {
-    const {
-      projectId, scene, setup, description, equipment, movement, angle, shotSize, lens, camera, sound,
-      timeEst, travelTime, manualStartTime, cast, notes
-    } = shotDetails;
-  
-    db.run(`INSERT INTO shots (project_id, scene, setup, description, equipment, movement, angle, shot_size, lens, camera, sound, time_est, travel_time, manual_start_time, cast, notes) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-      [projectId, scene, setup, description, equipment, movement, angle, shotSize, lens, camera, sound, timeEst, travelTime, manualStartTime, cast, notes], 
-      function(err) {
-        if (err) {
-          event.reply('add-shot-response', { success: false, message: 'Failed to add shot.' });
-        } else {
-          event.reply('add-shot-response', { success: true, message: 'Shot added successfully.', shot: shotDetails });
-        }
-      }
-    );
-  }
 
   function getShots(event, projectId) {
     db.all('SELECT * FROM shots WHERE project_id = ?', [projectId], (err, rows) => {
       if (err) {
         event.reply('get-shots-response', { success: false, message: 'Failed to fetch shots.' });
       } else {
-        event.reply('get-shots-response', { success: true, shots: rows });
+        const shotsWithIds = rows.map((shot, index) => ({ ...shot, id: index + 1 })); // Assign a unique ID to each shot
+        event.reply('get-shots-response', { success: true, shots: shotsWithIds });
       }
     });
   }
   
   
-module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, addShot, getShots };
+module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, getShots };

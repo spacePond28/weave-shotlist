@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
-const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails, addShot, getShots } = require('./js/project-manager');
+const { loadProjects, createNewProject, openProject, deleteProject, amendProjectDetails, getProjectDetails, getShots } = require('./js/project-manager');
 
 let mainWindow;
 let db = new sqlite3.Database('./shotlist.db');
@@ -30,8 +30,7 @@ function createTables() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         filming_date TEXT NOT NULL,
-        start_time TEXT NOT NULL,
-        lunch_time TEXT NOT NULL
+        start_time TEXT NOT NULL
     )`);
 
     db.run(`CREATE TABLE IF NOT EXISTS shots (
@@ -47,13 +46,11 @@ function createTables() {
         angle TEXT,
         shot_size TEXT,
         lens TEXT,
-        time_est TEXT,
-        notes TEXT,
         camera TEXT,
         sound TEXT,
+        time_est TEXT,
         cast TEXT,
-        travel_time TEXT,
-        manual_start_time TEXT,
+        notes TEXT,
         action TEXT,
         FOREIGN KEY (project_id) REFERENCES projects(id)
     )`);
@@ -65,5 +62,4 @@ ipcMain.on('open-project', openProject);
 ipcMain.on('delete-project', deleteProject);
 ipcMain.on('amend-project-details', amendProjectDetails);
 ipcMain.on('get-project-details', getProjectDetails);
-ipcMain.on('add-shot', addShot);
 ipcMain.on('get-shots', getShots);
