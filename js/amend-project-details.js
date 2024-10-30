@@ -30,11 +30,24 @@ ipcRenderer.on('amend-project-details-response', (event, response) => {
   alert(response.message);
 });
 
+
+
+//Add a hidden field with project id  (so we can reference it in other scripts)
+function addProjectId(projectId){
+  var hiddenField = document.createElement("input");
+  hiddenField.setAttribute("type","hidden");
+  hiddenField.setAttribute("id","projectId");
+  hiddenField.setAttribute("value",projectId);
+}
+
+
 // Load project details on page load
 window.onload = () => {
   const projectId = new URLSearchParams(window.location.search).get('projectId');
   if (projectId) {
     loadProjectDetails(projectId);
-    getShots(projectId); // Load shots for the project
+    addProjectId(projectId);
   }
 };
+
+

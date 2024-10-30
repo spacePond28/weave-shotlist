@@ -38,6 +38,7 @@ document.getElementById('add-shot-submit').addEventListener('click', function(ev
   const newRow = document.createElement('tr');
   newRow.setAttribute('data-value', convertToMinutes(duration));
   newRow.classList.add('handle');
+  newRow.classList.add('shotRow');
   newRow.innerHTML = `
       <td class="table-info fw-bold">${newTime}</td>
       <td>${shotNumber}</td>
@@ -99,6 +100,7 @@ document.getElementById('misc-time-submit').addEventListener('click', function(e
   const miscNewRow = document.createElement('tr');
   miscNewRow.classList.add('table-danger');
   miscNewRow.classList.add('handle');
+  newRow.classList.add('misc-row');
   miscNewRow.setAttribute('data-value', miscDurationInMinutes);
   miscNewRow.innerHTML = `
       <td class="fw-bold">${newTime}</td>
@@ -157,21 +159,104 @@ function recalculateTimes() {
   }
 }
 
-// save the shot list 
-document.getElementById('save-shots').addEventListener('click', function() {
-  const projectId = new URLSearchParams(window.location.search).get('projectId');
-  if (projectId) {
-    saveShots(projectId);
+
+//Saving functionality
+function extractTableData() {
+  const table = document.getElementById('shot-list');
+  const rows = table.querySelectorAll('tbody tr');
+  const data = [];
+
+  rows.forEach(row => {
+      if (row.classList.contains('table-danger')) {
+          // Miscellaneous Time row
+          const miscData = {
+              type: 'misc',
+              time: row.cells[0].innerText,
+              description: row.cells[1].innerText,
+              dataValue: row.getAttribute('data-value')
+          };
+          data.push(miscData);
+      } else {
+          // Shot row
+          const shotData = {
+              type: 'shot',
+              time: row.cells[0].innerText,
+              shotNumber: row.cells[1].innerText,
+              sceneNumber: row.cells[2].innerText,
+              takeNumber: row.cells[3].innerText,
+              description: row.cells[4].innerText,
+              equipment: row.cells[5].innerText,
+              movement: row.cells[6].innerText,
+              angle: row.cells[7].innerText,
+              framing: row.cells[8].innerText,
+              lens: row.cells[9].innerText,
+              audio: row.cells[10].innerText,
+              sound: row.cells[11].innerText,
+              duration: row.cells[12].innerText,
+              actors: row.cells[13].innerText,
+              notes: row.cells[14].innerText,
+              dataValue: row.getAttribute('data-value')
+          };
+          data.push(shotData);
+      }
+  });
+
+  return data;
+}
+
+//load shots functionality 
+function loadShots() {
+  const projectId = document.getElementById('projectId').value;
+  window.api.send('load-shots', projectId);
+}
+
+window.api.receive('load-shots-response', (response) => {
+  if (response.success) {
+      populateTable(response.shots, response.miscTimes);
   } else {
-    console.error('Project ID not found');
+      console.error('Failed to load shots:', response.message);
   }
 });
 
-// Load existing shots
-document.addEventListener('DOMContentLoaded', function() {
-  const projectId = document.getElementById('projectId').value; // Assuming you have a hidden input with the project ID
-  getShots(projectId);
-  if (err){
-    console.log(err);
-  } 
-});
+function populateTable(shots, miscTimes) {
+  const tableBody = document.querySelector('#shot-list tbody');
+  tableBody.innerHTML = ''; // Clear existing rows
+
+  shots.forEach(shot => {
+      const row = document.createElement('tr');
+      row.setAttribute('data-value', shot.dataValue);
+
+      const timeCell = document.createElement('td');
+      timeCell.classList.add('table-info', 'fw-bold');
+      timeCell.innerText = shot.time;
+      row.appendChild(timeCell);
+
+      // Add other cells for shot data
+      // ...
+
+      tableBody.appendChild(row);
+  });
+
+  miscTimes.forEach(misc => {
+      const row = document.createElement('tr');
+      row.classList.add('table-danger');
+      row.setAttribute('data-value', misc.dataValue);
+
+      const timeCell = document.createElement('td');
+      timeCell.classList.add('fw-bold');
+      timeCell.innerText = misc.time;
+      row.appendChild(timeCell);
+
+      const descriptionCell = document.createElement('td');
+      descriptionCell.classList.add('fw-bold', 'text-center');
+      descriptionCell.setAttribute('colspan', '14');
+      descriptionCell.innerText = misc.description;
+      row.appendChild(descriptionCell);
+
+      tableBody.appendChild(row);
+  });
+}
+
+
+
+
