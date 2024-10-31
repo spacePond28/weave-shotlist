@@ -56,30 +56,6 @@ function getProjectDetails(event, projectId) {
 }
 
 
-function saveShot(event, projectId, shotData) {
-  if (shotData.type === 'shot') {
-      db.run('INSERT INTO shots (project_id, time, shot_number, scene_number, take_number, description, equipment, movement, angle, framing, lens, audio, sound, duration, actors, notes, data_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-      [projectId, shotData.time, shotData.shotNumber, shotData.sceneNumber, shotData.takeNumber, shotData.description, shotData.equipment, shotData.movement, shotData.angle, shotData.framing, shotData.lens, shotData.audio, shotData.sound, shotData.duration, shotData.actors, shotData.notes, shotData.dataValue], 
-      function(err) {
-          if (err) {
-              event.reply('save-shot-response', { success: false, message: 'Failed to save shot.' });
-          } else {
-              event.reply('save-shot-response', { success: true, message: 'Shot saved successfully.', shotId: this.lastID });
-          }
-      });
-  } else if (shotData.type === 'misc') {
-      db.run('INSERT INTO misc_times (project_id, time, description, data_value) VALUES (?, ?, ?, ?)', 
-      [projectId, shotData.time, shotData.description, shotData.dataValue], 
-      function(err) {
-          if (err) {
-              event.reply('save-shot-response', { success: false, message: 'Failed to save miscellaneous time.' });
-          } else {
-              event.reply('save-shot-response', { success: true, message: 'Miscellaneous time saved successfully.', miscId: this.lastID });
-          }
-      });
-  }
-}
-
   
   
-module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails, saveShot };
+module.exports = { loadProjects, createNewProject, openProject, deleteProject, getProjectDetails, amendProjectDetails};

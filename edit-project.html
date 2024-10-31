@@ -211,7 +211,7 @@
                     </table>
                 </div>
                 <div class="row">
-                    <div class="col"><button id="save-schedule-submit" class="btn btn-primary w-100"
+                    <div class="col"><button id="save-button" class="btn btn-primary w-100"
                             type="button">Save</button></div>
                     <div class="col"><button id="export-schedule-submit" class="btn btn-secondary w-100"
                             type="button">Export</button></div>
@@ -219,6 +219,13 @@
             </div>
         </section>
     </div>
+    <script type="JavaScript" >
+        // edit-project.html (JavaScript)
+window.addEventListener('DOMContentLoaded', () => {
+    const projectId = /* get the project ID from the URL or other source */;
+    window.api.send('load-shots-from-db', projectId);
+});
+    </script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../node_modules/sortablejs/Sortable.min.js"></script>
     <script src="js/amend-project-details.js"></script>

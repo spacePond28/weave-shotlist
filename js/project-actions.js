@@ -65,6 +65,8 @@ document.getElementById('delete-project').addEventListener('click', () => {
     }
 });
 
+
+
 ipcRenderer.on('project-deleted', () => {
     loadProjects(); // Refresh the project list
 });
