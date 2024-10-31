@@ -38,7 +38,7 @@ document.getElementById('add-shot-submit').addEventListener('click', function(ev
   const newRow = document.createElement('tr');
   newRow.setAttribute('data-value', convertToMinutes(duration));
   newRow.classList.add('handle');
-  newRow.classList.add('shotRow');
+  newRow.classList.add('shot-row');
   newRow.innerHTML = `
       <td class="table-info fw-bold">${newTime}</td>
       <td>${shotNumber}</td>
