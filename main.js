@@ -29,38 +29,8 @@ function createTables() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
         filming_date TEXT NOT NULL,
-        start_time TEXT NOT NULL
-    )`);
-
-    db.run(`CREATE TABLE IF NOT EXISTS shots (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        project_id INTEGER NOT NULL,
-        time TEXT,
-        shot_number TEXT,
-        scene_number TEXT,
-        take_number TEXT,
-        description TEXT,
-        equipment TEXT,
-        movement TEXT,
-        angle TEXT,
-        framing TEXT,
-        lens TEXT,
-        audio TEXT,
-        sound TEXT,
-        duration TEXT,
-        actors TEXT,
-        notes TEXT,
-        data_value TEXT,
-        FOREIGN KEY (project_id) REFERENCES projects(id)
-    )`);
-
-    db.run(`CREATE TABLE IF NOT EXISTS misc_times (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        project_id INTEGER NOT NULL,
-        time TEXT NOT NULL,
-        description TEXT NOT NULL,
-        data_value TEXT,
-        FOREIGN KEY (project_id) REFERENCES projects(id)
+        start_time TEXT NOT NULL,
+        table_html TEXT
     )`);
 }
 
@@ -90,13 +60,23 @@ function openProject(event, projectId) {
     event.reply('project-opened', projectId);
 }
 
-function deleteProject(event, projectId) {
-    db.run('DELETE FROM projects WHERE id = ?', [projectId], function(err) {
-        if (err) {
-            throw err;
-        }
-        event.reply('project-deleted');
+async function deleteProject(event, projectId) {
+    const { response } = await dialog.showMessageBox({
+        type: 'warning',
+        buttons: ['Cancel', 'Delete'],
+        defaultId: 1,
+        cancelId: 0,
+        message: 'Are you sure you want to delete this project?'
     });
+
+    if (response === 1) {
+        db.run('DELETE FROM projects WHERE id = ?', [projectId], function(err) {
+            if (err) {
+                throw err;
+            }
+            event.reply('project-deleted');
+        });
+    }
 }
 
 function getProjectDetails(event, projectId) {
@@ -121,38 +101,24 @@ function amendProjectDetails(event, projectDetails) {
     });
 }
 
-function saveShotData(shotData) {
-    db.run(`INSERT INTO shots (project_id, time, shot_number, scene_number, take_number, description, equipment, movement, angle, framing, lens, audio, sound, duration, actors, notes, data_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-    [shotData.project_id, shotData.time, shotData.shot_number, shotData.scene_number, shotData.take_number, shotData.description, shotData.equipment, shotData.movement, shotData.angle, shotData.framing, shotData.lens, shotData.audio, shotData.sound, shotData.duration, shotData.actors, shotData.notes, shotData.data_value], function(err) {
+function saveTableHTML(data) {
+    const { projectId, tableHTML } = data;
+    db.run('UPDATE projects SET table_html = ? WHERE id = ?', [tableHTML, projectId], function(err) {
         if (err) {
-            console.error('Error saving shot data:', err);
+            console.error('Error saving table HTML:', err);
             return;
         }
-        // Notify the renderer process that the shot data was saved successfully
-        mainWindow.webContents.send('save-shot-data-response', { message: 'Shot data saved successfully!' });
+        mainWindow.webContents.send('save-table-html-response', { message: 'Table HTML saved successfully!' });
     });
-}
-
-function saveMiscData(miscData) {
-    db.run(`INSERT INTO misc_times (project_id, time, description, data_value) VALUES (?, ?, ?, ?)`, 
-    [miscData.project_id, miscData.time, miscData.description, miscData.data_value]);
 }
 
 function loadTableData(projectId, event) {
-    db.all(`SELECT * FROM shots WHERE project_id = ?`, [projectId], (err, shots) => {
+    db.get('SELECT table_html FROM projects WHERE id = ?', [projectId], (err, row) => {
         if (err) {
-            console.error(err);
+            console.error('Error loading table HTML:', err);
             return;
         }
-        event.reply('shots-loaded', shots);
-    });
-
-    db.all(`SELECT * FROM misc_times WHERE project_id = ?`, [projectId], (err, miscTimes) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        event.reply('misc-times-loaded', miscTimes);
+        event.reply('table-html-loaded', row.table_html);
     });
 }
 
@@ -163,24 +129,19 @@ ipcMain.on('delete-project', deleteProject);
 ipcMain.on('amend-project-details', amendProjectDetails);
 ipcMain.on('get-project-details', getProjectDetails);
 
-ipcMain.on('save-shot-data', (event, shotData) => {
-    saveShotData(shotData);
-});
-
-ipcMain.on('save-misc-data', (event, miscData) => {
-    saveMiscData(miscData);
+ipcMain.on('save-table-html', (event, data) => {
+    saveTableHTML(data);
 });
 
 ipcMain.on('load-table-data', (event, projectId) => {
     loadTableData(projectId, event);
 });
 
-ipcMain.on('show-message-box', (event, message) => {
-    dialog.showMessageBox({
+ipcMain.on('show-message-box', async (event, message) => {
+    await dialog.showMessageBox({
         type: 'info',
         title: 'Information',
         message: message
     });
+    event.reply('message-box-closed');
 });
-
-app.console = new console.Console(process.stdout, process.stderr);
